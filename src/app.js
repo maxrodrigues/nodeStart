@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 
-const router = express.Router();
-const route = router.get("/", (req, res, next) => {
-    res.status(200).send({
-        title: "Node Store API",
-        version: "0.0.1",
-    });
-});
+// ROTAS CARREGADAS
+const index = require("./routes/index");
+const products = require("./routes/products");
 
-app.use("/", route);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use("/", index);
+app.use("/products", products);
 
 module.exports = app;
