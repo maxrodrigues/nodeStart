@@ -5,6 +5,8 @@ const app = express();
 
 mongoose.connect("mongodb://balta:e296cd9f@localhost:27017/admin");
 
+const Product = require("./models/Product");
+
 // ROTAS CARREGADAS
 const index = require("./routes/index");
 const products = require("./routes/products");

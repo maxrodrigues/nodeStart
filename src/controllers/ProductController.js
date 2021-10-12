@@ -1,7 +1,85 @@
 "use-strict";
 
+const mongoose = require("mongoose");
+const Product = mongoose.model("Product");
+
+// List all products
+exports.get = (req, res, next) => {
+    Product.find({ active: true }, "title slug price")
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch((e) => {
+            res.status(400).send({
+                message: "Houve um erro ao listar os produto!",
+                data: e,
+            });
+        });
+};
+
+// List product by slug
+exports.getBySlug = (req, res, next) => {
+    Product.findOne(
+        {
+            slug: req.params.slug,
+            active: true,
+        },
+        "title slug price description tags"
+    )
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch((e) => {
+            res.status(400).send({
+                message: "Houve um erro ao listar os produto!",
+                data: e,
+            });
+        });
+};
+
+// List product by ID
+exports.getById = (req, res, next) => {
+    Product.findById(req.params.id, "title slug price description tags")
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch((e) => {
+            res.status(400).send({
+                message: "Houve um erro ao listar os produto!",
+                data: e,
+            });
+        });
+};
+
+// List product by Tags
+exports.getByTags = (req, res, next) => {
+    Product.find({ tags: req.params.tag }, "title slug price description tags")
+        .then((data) => {
+            res.status(200).send(data);
+        })
+        .catch((e) => {
+            res.status(400).send({
+                message: "Houve um erro ao listar os produto!",
+                data: e,
+            });
+        });
+};
+
 exports.post = (req, res, next) => {
-    res.status(201).send(req.body);
+    let product = new Product(req.body);
+    product
+        .save()
+        .then((x) => {
+            res.status(201).send({
+                message: "Produto cadastrado com sucesso!",
+            });
+        })
+        .catch((e) => {
+            res.status(400).send({
+                message: "Houve um erro ao cadastrar o produto!",
+                data: e,
+            });
+        });
 };
 
 exports.put = (req, res, next) => {
