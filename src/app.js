@@ -1,5 +1,9 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
 const app = express();
+
+mongoose.connect("mongodb://balta:e296cd9f@localhost:27017/admin");
 
 // ROTAS CARREGADAS
 const index = require("./routes/index");
