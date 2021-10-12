@@ -83,6 +83,7 @@ exports.post = (req, res, next) => {
         });
 };
 
+// Update product by ID
 exports.put = (req, res, next) => {
     Product.findByIdAndUpdate(req.params.id, {
         $set: {
@@ -106,5 +107,16 @@ exports.put = (req, res, next) => {
 };
 
 exports.delete = (req, res, next) => {
-    res.status(200).send(req.body);
+    Product.findOneAndRemove(req.params.id)
+        .then((x) => {
+            res.status(200).send({
+                message: "Produto excluido com sucesso",
+            });
+        })
+        .catch((e) => {
+            res.status(200).send({
+                message: "Houve um erro ao excluir o produto",
+                data: e,
+            });
+        });
 };
